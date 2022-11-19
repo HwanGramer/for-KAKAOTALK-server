@@ -45,6 +45,8 @@ axios.post('/api/user/login' , loginInfo).then((result)=>{
 ```
 로그인 버튼을 눌렀을때 로그인 요청 코드이다. result.data.suc은 서버에서 오는 데이터로 false시 alert메세지로 로그인이 되지않은 이유를 알려준다. true시 '/main'페이지로 넘어가게된다. 
 
+<img src='https://user-images.githubusercontent.com/100682468/202847973-444d97b8-214b-4bf7-9054-6bab0119f094.png' width='350'>
+
 <br>
 <br>
 
@@ -76,6 +78,8 @@ const signUpBtnClicked = ()=>{              //? 회원가입 버튼 클릭
 }
 ```
 회원가입시 아이디 , 전화번호 공백제거 후 8자리 이상입력시 회원가입 요청가능 '/api/user/signUp'로 POST요청
+
+<img src='https://user-images.githubusercontent.com/100682468/202847944-20dc09e4-c965-44b1-bb53-4b78bc1263e7.png' width='350'>
 
 <br>
 <br>
