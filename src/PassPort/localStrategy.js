@@ -27,7 +27,7 @@ passport.deserializeUser((user_id , done)=>{
     const sql = `SELECT * FROM user_tbl WHERE user_id='${user_id}'`
     connection.query(sql , (err , rows)=>{
         if(err) return done(err);
-        return done(null , rows);
+        return done(null , rows[0]);
     })
 })
 
