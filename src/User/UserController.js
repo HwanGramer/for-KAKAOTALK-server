@@ -35,6 +35,41 @@ const UserController  = {
         // console.log(req.body.newName);
         // console.log(req.user); //? req.user이용해서 바꿔야됨
     }
+    ,
+    POSTAddFriendTel : (req,res)=>{
+        const query = `SELECT * FROM user_tbl WHERE user_tel = '${req.body.tel}'`
+        connection.query(query , (err,rows)=>{
+            if(err) return console.log(err);
+            console.log(rows[0]);
+
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+            //? 일단 검색하면 유저 나오는데 친구목록에 어떻게 저장해야될지 생각좀 해보자.
+        })
+    }
+    ,
+
+    GETFirendList : (req,res)=>{
+        const query = `SELECT * FROM friend_list WHERE user_id = '${req.user.user_id}'`
+        connection.query(query , (err , rows)=>{
+            if(err) return console.log(err)
+            console.log(rows);
+        })
+    }
+    ,
+
 }
 
 
