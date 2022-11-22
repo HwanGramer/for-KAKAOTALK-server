@@ -13,10 +13,11 @@ UserRouter.post('/changeName' ,isLoggedIn, UserController.POSTChangeName); //? �
 UserRouter.get('/friendList', UserController.GETFirendList); //? 친구목록 불러오기
 
 
-UserRouter.post('/addFriendTel' , UserController.POSTAddFriendTel);  //!아직 보류
+UserRouter.post('/friend/add' , UserController.POSTAddFriend);  //!친구 추가 
 
-UserRouter.post('/findUserInfo/tel' , UserController.POSTFindUserInfoTel);  //? 번호로 친구찾기
 
-UserRouter.post('/findUserInfo/id' , UserController.POSTFindUserInfoId);
+UserRouter.post('/findUserInfo/tel' , UserController.POSTFindUserInfoTel);  //? 번호로 유저찾기
+
+UserRouter.post('/findUserInfo/id' , UserController.POSTFindUserInfoId);    //? 아이디로 유저찾기
 
 module.exports = UserRouter;
