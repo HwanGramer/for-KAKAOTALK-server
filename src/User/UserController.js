@@ -57,30 +57,31 @@ const UserController  = {
     ,
 
     POSTAddFriend : (req,res)=>{ //! 수정바람.
-        //? 친구추가를 어떻게 해야될까...  이게 중복열이 겹치는걸 sql로 안되나?
-        //? 친구추가를 어떻게 해야될까...  이게 중복열이 겹치는걸 sql로 안되나?
-        //? 친구추가를 어떻게 해야될까...  이게 중복열이 겹치는걸 sql로 안되나?
-        //? 친구추가를 어떻게 해야될까...  이게 중복열이 겹치는걸 sql로 안되나?
-        //? 친구추가를 어떻게 해야될까...  이게 중복열이 겹치는걸 sql로 안되나?
-        //? 친구추가를 어떻게 해야될까...  이게 중복열이 겹치는걸 sql로 안되나?
-        //? 친구추가를 어떻게 해야될까...  이게 중복열이 겹치는걸 sql로 안되나?
-        //? 친구추가를 어떻게 해야될까...  이게 중복열이 겹치는걸 sql로 안되나?
-        //? 친구추가를 어떻게 해야될까...  이게 중복열이 겹치는걸 sql로 안되나?
-        const query = ``
-        console.log(req.body.id); 
+        const query = `INSERT INTO friend_list VALUES('${req.user.user_id}' , '${req.body.id}')`
         //? 해야될거 req.user.user_id 랑 req.body.id 친구 만들어야됨 DB에
-        res.json({asd:'asd'});
+        connection.query(query , (err , rows)=>{
+            if(err?.errno === 1062) return res.json({suc : false , msg : '이미 친추되어있습니다'});
+            if(err) return res.json({suc : false , msg : '데이터베이스 오류입니다'});
+            return res.json({suc : true , msg : '친추완료'});
+        })
     }
     ,
 
     GETFirendList : (req,res)=>{
         const query = `SELECT * FROM friend_list WHERE user_id = '${req.user.user_id}'`
         connection.query(query , (err , rows)=>{
-            if(err) return console.log(err)
-            console.log(rows);
+            if(err) return res.json({suc : false , msg : '친구목록을 불러올 수 없습니다'});
+            res.json({suc : true , data : rows});
         })
     }
     ,
+    GETMyInfo : (req,res)=>{
+        const query = `SELECT user_name , user_id , user_name , user_tel , user_status , user_sex , user_socket , user_img FROM user_tbl WHERE user_id='${req.user.user_id}'`;
+        connection.query(query , (err,rows)=>{
+            if(err) return res.json({suc : false , msg : '사용자를 찾을 수 없습니다'});
+            res.json({suc : true , data : rows[0]});
+        })
+    }
 
 }
 
