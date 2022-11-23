@@ -3,8 +3,8 @@ const { Encryption } = require("./encryption");
 const passport = require('../PassPort/localStrategy');
 
 const UserController  = {
-    POSTSignUp : (req,res)=>{
-        const query = `INSERT INTO user_tbl(user_id,user_pw,user_tel,user_status) VALUES('${req.body.id}','${Encryption(req.body.pw)}','${req.body.tel}','1')`;
+    POSTSignUp : (req,res)=>{ //? 이름 기본값으로 들어가는건 아이디임
+        const query = `INSERT INTO user_tbl(user_name,user_id,user_pw,user_tel,user_status) VALUES('${req.body.id}','${req.body.id}','${Encryption(req.body.pw)}','${req.body.tel}','1')`;
         connection.query(query , (err , rows)=>{
             if(err){
                 if(err.errno === 1062)return res.json({suc : false , msg : '이미가입된 아이디 또는 전화번호입니다'});
@@ -67,14 +67,21 @@ const UserController  = {
     }
     ,
 
-    GETFirendList : (req,res)=>{
-        const query = `SELECT * FROM friend_list WHERE user_id = '${req.user.user_id}'`
+    GETFirendList : (req,res)=>{ //? 친구 목록 불러오기
+        const query = `
+        SELECT U.user_id , U.user_name , U.user_status , U.user_socket , U.user_img , U.user_status_msg
+        FROM friend_list F 
+        INNER JOIN user_tbl U
+        ON F.friend_id = U.user_id
+        WHERE F.user_id = '${req.user.user_id}'`
         connection.query(query , (err , rows)=>{
             if(err) return res.json({suc : false , msg : '친구목록을 불러올 수 없습니다'});
             res.json({suc : true , data : rows});
         })
     }
+
     ,
+    
     GETMyInfo : (req,res)=>{
         const query = `SELECT user_name , user_id , user_name , user_tel , user_status , user_sex , user_socket , user_img FROM user_tbl WHERE user_id='${req.user.user_id}'`;
         connection.query(query , (err,rows)=>{
