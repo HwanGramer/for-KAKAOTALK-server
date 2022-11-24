@@ -83,11 +83,22 @@ const UserController  = {
 
     ,
     POSTMyInfoProfileUpdate : (req,res)=>{
-        //? 프로필이미지 저장하기
-        profileImgUpload(req,res,(err)=>{
-            if(err) return console.log(err); res.json({suc : false , msg : 'ER'});
-            return res.json({suc : true , url : res.req.file.path});
+        //? 클라이언트에서 오는 사진 서버에 저장해야됨.
+        profileImgUpload(req,res,(err)=>{ //? 저장이 잘됬다면 
+            if(err){
+                console.log(err);
+                return res.json({suc : false , msg : '이미지 저장 오류입니다'});
+            } 
+            // console.log(req.file.filename); //? 설정한 파일 이름
+            const query = `UPDATE user_tbl SET user_img = '/UserProfileImgs/${req.file.filename}' WHERE user_id = '${req.user.user_id}'`;
+            connection.query(query , (err,rows)=>{
+                if(err){
+                    console.log(err); return res.json({suc : false , msg : '이미지 업로드에 실패하였습니다'});  
+                } 
+                return res.json({suc : true , msg : '이미지 업로드에 성공하였습니다' , imgName : req.file.filename});
+            })
         })
+        return
     }
     ,
     

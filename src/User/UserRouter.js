@@ -12,11 +12,12 @@ UserRouter.post('/changeName' ,isLoggedIn, UserController.POSTChangeName); //? �
 
 UserRouter.get('/myinfo' ,isLoggedIn, UserController.GETMyInfo);
 
-UserRouter.post('/myinfo/profileImg' , isLoggedIn , UserController.POSTMyInfoProfileUpdate);
+UserRouter.post('/myinfo/profileImg' , isLoggedIn ,UserController.POSTMyInfoProfileUpdate); //? 프로필사진 업데이트
 
-UserRouter.get('/friend/list', UserController.GETFirendList); //? 친구목록 불러오기
+UserRouter.get('/friend/list',isLoggedIn, UserController.GETFirendList); //? 친구목록 불러오기
 
 UserRouter.post('/friend/add' ,isLoggedIn, UserController.POSTAddFriend);  //? 친구 추가 
+
 
 UserRouter.post('/findUserInfo/tel' ,isLoggedIn, UserController.POSTFindUserInfoTel);  //? 번호로 유저찾기
 
