@@ -1,6 +1,7 @@
 const connection = require("../Config/mysql");
 const { Encryption } = require("./encryption");
 const passport = require('../PassPort/localStrategy');
+const profileImgUpload = require('../Multer/Multer');
 
 const UserController  = {
     POSTSignUp : (req,res)=>{ //? 이름 기본값으로 들어가는건 아이디임
@@ -80,6 +81,14 @@ const UserController  = {
         })
     }
 
+    ,
+    POSTMyInfoProfileUpdate : (req,res)=>{
+        //? 프로필이미지 저장하기
+        profileImgUpload(req,res,(err)=>{
+            if(err) return console.log(err); res.json({suc : false , msg : 'ER'});
+            return res.json({suc : true , url : res.req.file.path});
+        })
+    }
     ,
     
     GETMyInfo : (req,res)=>{

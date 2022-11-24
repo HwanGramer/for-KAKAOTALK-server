@@ -12,6 +12,8 @@ UserRouter.post('/changeName' ,isLoggedIn, UserController.POSTChangeName); //? �
 
 UserRouter.get('/myinfo' ,isLoggedIn, UserController.GETMyInfo);
 
+UserRouter.post('/myinfo/profileImg' , isLoggedIn , UserController.POSTMyInfoProfileUpdate);
+
 UserRouter.get('/friend/list', UserController.GETFirendList); //? 친구목록 불러오기
 
 UserRouter.post('/friend/add' ,isLoggedIn, UserController.POSTAddFriend);  //? 친구 추가 
