@@ -8,9 +8,11 @@ UserRouter.post('/signUp' , UserController.POSTSignUp); //? 회원가입처리
 
 UserRouter.post('/login' , UserController.POSTLogin); //? 로그인처리
 
-UserRouter.post('/changeName' ,isLoggedIn, UserController.POSTChangeName); //? 이름바꾸기
+UserRouter.put('/changeName' ,isLoggedIn, UserController.PUTrequest.ChangeName); //? 이름바꾸기
 
-UserRouter.get('/myinfo' ,isLoggedIn, UserController.GETMyInfo);
+UserRouter.put('/statusMsg' , isLoggedIn , UserController.PUTrequest.StatusMsg); //? 상태메세지 바꾸기
+
+UserRouter.get('/myinfo' ,isLoggedIn, UserController.GETMyInfo); //? 나의 정보 가져오기
 
 UserRouter.post('/myinfo/profileImg' , isLoggedIn ,UserController.POSTMyInfoProfileUpdate); //? 프로필사진 업데이트
 

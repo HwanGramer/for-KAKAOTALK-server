@@ -27,16 +27,6 @@ const UserController  = {
         })(req,res,next)
     }
     ,
-    POSTChangeName : (req,res)=>{ //? 이름변경
-        const query = `UPDATE user_tbl SET user_name='${req.body.newName}' WHERE user_id = '${req.user.user_id}'`
-        connection.query(query , (err , rows)=>{
-            if(err) return res.json({suc : false , msg : 'USER 500ERROR'});
-            return res.json({suc : true , msg : '이름이 수정되었습니다'});
-        })
-        // console.log(req.body.newName);
-        // console.log(req.user); //? req.user이용해서 바꿔야됨
-    }
-    ,
     POSTFindUserInfoTel : (req,res)=>{ //? 번호로 유저 찾아줌
         const query = `SELECT user_id , user_name , user_img FROM user_tbl WHERE user_tel = '${req.body.tel}'`
         connection.query(query , (err,rows)=>{
@@ -95,7 +85,7 @@ const UserController  = {
                 if(err){
                     console.log(err); return res.json({suc : false , msg : '이미지 업로드에 실패하였습니다'});  
                 } 
-                return res.json({suc : true , msg : '이미지 업로드에 성공하였습니다' , imgName : req.file.filename});
+                return res.json({suc : true , msg : '이미지 업로드에 성공하였습니다'});
             })
         })
         return
@@ -103,12 +93,35 @@ const UserController  = {
     ,
     
     GETMyInfo : (req,res)=>{
-        const query = `SELECT user_name , user_id , user_name , user_tel , user_status , user_sex , user_socket , user_img FROM user_tbl WHERE user_id='${req.user.user_id}'`;
+        const query = `SELECT user_name , user_id , user_name , user_tel , user_status , user_sex , user_socket , user_img , user_status_msg FROM user_tbl WHERE user_id='${req.user.user_id}'`;
         connection.query(query , (err,rows)=>{
             if(err) return res.json({suc : false , msg : '사용자를 찾을 수 없습니다'});
             res.json({suc : true , data : rows[0]});
         })
     }
+
+    ,
+    PUTrequest : {
+        ChangeName : (req,res)=>{ //? 이름변경
+            const query = `UPDATE user_tbl SET user_name='${req.body.newName}' WHERE user_id = '${req.user.user_id}'`
+            connection.query(query , (err , rows)=>{
+                if(err) return res.json({suc : false , msg : 'DB ERROR'});
+                return res.json({suc : true , msg : '이름이 수정되었습니다'});
+            })
+            // console.log(req.body.newName);
+            // console.log(req.user); //? req.user이용해서 바꿔야됨
+        }
+        ,
+        StatusMsg : (req,res)=>{ //? body : {newStatusMsg : '...'} 
+            const query = `UPDATE user_tbl SET user_status_msg = '${req.body.newStatusMsg}' WHERE user_id = '${req.user.user_id}'`;
+            connection.query(query , (err , rows)=>{
+                if(err) return res.json({suc : false , msg : 'DB ERROR'});
+                return res.json({suc : true , msg : '상태메세지 수정이 완료되었습니다'});
+            })
+        }
+    }
+
+
 
 }
 
