@@ -27,6 +27,16 @@ const UserController  = {
         })(req,res,next)
     }
     ,
+    POSTUserCheck : (req,res)=>{ //? 유저가 존재하는지 유저ID로 체크 userId
+        const userId = req.body.userId;
+        const query = `SELECT * FROM user_tbl WHERE user_id = '${userId}'`;
+        connection.query(query , (err,rows)=>{
+            if(err) return res.json({suc : false , msg : 'DB ERROR'});
+            if(rows.length===0) return res.json({suc : false , msg : '존재하지않는유저입니다'});
+            return res.json({suc : true , data : rows[0]});
+        })
+    }
+    ,
     POSTFindUserInfoTel : (req,res)=>{ //? 번호로 유저 찾아줌
         const query = `SELECT user_id , user_name , user_img FROM user_tbl WHERE user_tel = '${req.body.tel}'`
         connection.query(query , (err,rows)=>{
