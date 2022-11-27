@@ -1,28 +1,65 @@
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
+
+const http = require('http').createServer(app);
+const {Server} = require('socket.io');
+const io = new Server(http);
+
 const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session'); 
 const {SESSIONKEY} = require('./src/Config/SESSIONKEY');
-const UserRouter = require('./src/User/UserRouter');
 
-app.use(cors());
-app.use(express.urlencoded({extended : true}));
-app.use(express.json());
-app.use(session({ //? 세션 설정 
+const UserRouter = require('./src/User/UserRouter');
+const ChatRouter = require('./src/Chat/ChatRouter');
+
+const socketController = require('./src/socketController/socketController'); //? 소켓 컨트롤러 가져옴. 
+
+const sessionMiddleware = session({ //? 세션 설정 
     secret : SESSIONKEY , 
     resave : true , 
     saveUninitialized : false ,
     cookie : { //? 쿠키의 관한 설정들 
         httpOnly : true
     }
-}))
+})
+
+app.use(cors());
+app.use(express.urlencoded({extended : true}));
+app.use(express.json());
+app.use(sessionMiddleware)
 app.use(express.static('public'));
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/user' , UserRouter);
+app.use('/api/chat' , ChatRouter);
 
-app.listen(8080 , ()=>{
-    console.log('server On 8080');
+
+http.listen(8080 , ()=>{
+    console.log('http server On 8080');
 })
+
+
+io.on('connection' , function(socket){
+
+    //? 클라이언트에서 MainPage로 접속하면 그 사용자의 아이디가온다. 그 아이디에 해당하는 DB에 socket컬럼에 넣어주자.
+    socket.on('DBinSocket' , function(myId , cb){ 
+        socketController.DBinSocket(socket , myId , cb) 
+    });
+
+
+    socket.info = socket.id;
+    console.log(socket.info);
+
+    //? 친구목록에서 더블클릭하면 개인챗이 만들어진다. 그 개인챗에서 나의 소켓정보와 나의 아이디 , 상대방의 아이디를 넣어줘야한다. 그럼 DB에 chat_room을 열을 만든다.
+    // console.log(socket.id);
+
+
+    socket.on('disconnect' , ()=>{
+        console.log('접속해제' + socket.id);
+    })
+
+})
+

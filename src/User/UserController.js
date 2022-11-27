@@ -3,6 +3,7 @@ const { Encryption } = require("./encryption");
 const passport = require('../PassPort/localStrategy');
 const profileImgUpload = require('../Multer/Multer');
 
+
 const UserController  = {
     POSTSignUp : (req,res)=>{ //? 이름 기본값으로 들어가는건 아이디임
         const query = `INSERT INTO user_tbl(user_name,user_id,user_pw,user_tel,user_status) VALUES('${req.body.id}','${req.body.id}','${Encryption(req.body.pw)}','${req.body.tel}','1')`;
