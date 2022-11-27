@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const cookieParser = require('cookie-parser');
 
 const http = require('http').createServer(app);
 const {Server} = require('socket.io');
@@ -49,12 +48,11 @@ io.on('connection' , function(socket){
         socketController.DBinSocket(socket , myId , cb) 
     });
 
-
-    socket.info = socket.id;
-    console.log(socket.info);
-
     //? 친구목록에서 더블클릭하면 개인챗이 만들어진다. 그 개인챗에서 나의 소켓정보와 나의 아이디 , 상대방의 아이디를 넣어줘야한다. 그럼 DB에 chat_room을 열을 만든다.
-    // console.log(socket.id);
+    //? 클라A , 클라B , DB 총3개가 접속이 끊기지않고 계속 동기화가 되어있다. !!
+    socket.on('MakePrivateChat' , (userData , cb)=>{
+        socketController.MakePrivateChat(io , userData , socket.id , cb);
+    })
 
 
     socket.on('disconnect' , ()=>{
@@ -62,4 +60,6 @@ io.on('connection' , function(socket){
     })
 
 })
+
+module.exports = io;
 
