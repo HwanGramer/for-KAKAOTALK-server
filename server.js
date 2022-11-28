@@ -54,6 +54,11 @@ io.on('connection' , function(socket){
         socketController.MakePrivateChat(io , userData , socket.id , cb);
     })
 
+    //? 클라이언트에서 챗메세지와 챗받을사람의 소켓id가 온다. -> 해당 소캣id로 챗메시지를 보낸다.
+    socket.on('chatMsg' , (chatMsg , receiverSocketId , cb)=>{
+        socketController.SendChat(io,chatMsg , receiverSocketId , cb);
+    })
+
 
     socket.on('disconnect' , ()=>{
         console.log('접속해제' + socket.id);
@@ -61,5 +66,4 @@ io.on('connection' , function(socket){
 
 })
 
-module.exports = io;
 

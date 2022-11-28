@@ -1,5 +1,5 @@
 const connection = require('../Config/mysql');
-
+const ios = require('../../server');
 
 module.exports = {
 
@@ -42,6 +42,13 @@ module.exports = {
             })
         })
         
+    }
+    ,
+    SendChat : function(io,chatMsg , receiverSocketId , cb){
+        io.to(receiverSocketId).emit('chatMsg' , chatMsg , (err)=>{
+            if(err) console.log(err);
+        });
+        if(cb)cb();
     }
 
 }
