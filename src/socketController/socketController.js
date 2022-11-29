@@ -41,12 +41,16 @@ module.exports = {
                 io.to(rows[0].member_B_socket).emit('chatSocketUpdate',rows[0]);
             })
         })
-        
     }
     ,
-    SendChat : function(io,chatMsg , receiverSocketId ,myId, cb){
+    //?  클라이언트에서 오는 챗을 받아서 DB에 저장하고 상대 클라이언트에게 소켓으로 보내준다. 
+    SendChat : function(io,chatMsg , receiverSocketId ,myId,receiver, cb){
         io.to(receiverSocketId).emit('chatMsg' , {chatMsg ,myId}, (err)=>{
-            if(cb) return cb();
+            const query = `INSERT INTO chat_tbl VALUES('${myId}' ,'${receiver}' ,'${chatMsg}',now());`;
+            connection.query(query , (err , rows)=>{
+                if(err) return cb(err);
+                if(cb) cb(null);
+            })
         });
     }
 
