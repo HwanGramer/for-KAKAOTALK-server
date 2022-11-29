@@ -55,9 +55,27 @@ io.on('connection' , function(socket){
     })
 
     //? 클라이언트에서 챗메세지와 챗받을사람의 소켓id가 온다. -> 해당 소캣id로 챗메시지를 보낸다.
-    socket.on('chatMsg' , (chatMsg , receiverSocketId , cb)=>{
-        socketController.SendChat(io,chatMsg , receiverSocketId , cb);
+    socket.on('chatMsg' , (chatMsg , receiverSocketId ,myId,receiver,cb)=>{
+        //! 여기서 챗이 오면 저장이 DB에 저장시키는걸 해야된다
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        console.log(`${myId}가 ${receiver}에게 ${chatMsg}라고 한다.`); //! 이걸 토대로 DB TABLE만들어서 여기다가 저장. 하자 이제 할일 이다. 그리고 클라이언트에서 맨처음 챗창접속하면 챗목록 꺼내오면됨.
+        // console.log(io.sockets.adapter.rooms.keys())
+        socketController.SendChat(io,chatMsg , receiverSocketId , myId ,receiver, cb);
     })
+
 
 
     socket.on('disconnect' , ()=>{

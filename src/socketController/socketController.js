@@ -44,11 +44,10 @@ module.exports = {
         
     }
     ,
-    SendChat : function(io,chatMsg , receiverSocketId , cb){
-        io.to(receiverSocketId).emit('chatMsg' , chatMsg , (err)=>{
-            if(err) console.log(err);
+    SendChat : function(io,chatMsg , receiverSocketId ,myId, cb){
+        io.to(receiverSocketId).emit('chatMsg' , {chatMsg ,myId}, (err)=>{
+            if(cb) return cb();
         });
-        if(cb)cb();
     }
 
 }
