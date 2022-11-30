@@ -7,7 +7,7 @@ module.exports = {
     DBinSocket : function(socket , myId , cb){
         const query = `UPDATE user_tbl SET user_socket = '${socket.id}' , user_status = 1 WHERE user_id = '${myId}';`;
         connection.query(query , (err , rows)=>{
-            if(err) console.log(err);
+            if(err) return console.log(err);
         })
         if(cb) cb();
     }
@@ -34,7 +34,7 @@ module.exports = {
                 })
             }
 
-            const query = `SELECT * FROM chat_room WHERE (member_A_id ='${myId}' && member_B_id='${receiverId}') || (member_A_id ='${receiverId}' && member_B_id='${myId}');`;
+            const query = `SELECT * FROM chat_room WHERE (member_A_id ='${myId}' AND member_B_id='${receiverId}') OR (member_A_id ='${receiverId}' AND member_B_id='${myId}');`;
             connection.query(query , (err , rows)=>{ //? 이걸로 서로 소켓을 동기화 시켜준다. 서로 새로고침해도 끊기지 않도록 
                 //? 이거 콜백말고 소켓으로 보냅시당.
                 io.to(rows[0].member_A_socket).emit('chatSocketUpdate',rows[0]);
@@ -51,6 +51,13 @@ module.exports = {
                 if(err) return cb(err);
                 if(cb) cb(null);
             })
+
+            //? 최신 메세지 하나 저장. 
+            const query2 = `UPDATE chat_room SET last_msg='${chatMsg}' , sender='${myId}' , chatTime=now() WHERE (member_A_id='${myId}' AND member_B_id='${receiver}') OR (member_A_id='${receiver}' AND member_B_id='${myId}');`
+            connection.query(query2 , (err , rows)=>{
+                if(err) return console.log(err)
+                //! 여기서 이제 소켓으로도 상대클라이언트한테 알려야 될듯 
+            });
         });
     }
 
