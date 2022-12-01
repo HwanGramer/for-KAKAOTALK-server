@@ -56,13 +56,20 @@ io.on('connection' , function(socket){
     })
 
     //? 클라이언트에서 챗메세지와 챗받을사람의 소켓id가 온다. -> 해당 소캣id로 챗메시지를 보낸다.
-    socket.on('chatMsg' , (chatMsg , receiverSocketId ,myId,receiver,cb)=>{
+    socket.on('chatMsg' , (chatMsg , receiverSocketId ,myId,receiver,cb)=>{ 
         //! 여기서 챗이 오면 저장이 DB에 저장시키는걸 해야된다
         // console.log(io.sockets.adapter.rooms.keys())
         socketController.SendChat(io,chatMsg , receiverSocketId , myId ,receiver, cb);
     })
 
 
+    //? 개인챗팅방에서 나오는 last_msg를 MainPage의 채팅리스트의 last_msg와 동기화 하기위함. chatMsg->last_msg
+    socket.on('UpdateLastMsg' , (sendUsersocket)=>{ //! 나에게 보낼때 socket.id로 보내면안된다. 왜냐 PrivateChatPage는 다른 소켓을 사용중이다.
+        //? sendUsersocket은 상대의 MainPage소켓이다.
+        io.to(sendUsersocket).emit('onLastMsg'); //? 상대방아이디와 나한테까지도 날림. 라스트메시지 업데이트임
+        //? 여기서 sendUserInfo.user_socket에다가 나의 id와 마지막 메시지 날리면된다.
+        //? 여기서 메시지 몇개왔는지 해도될거같긴한데...
+    })
 
     socket.on('disconnect' , ()=>{
         console.log('접속해제' + socket.id);

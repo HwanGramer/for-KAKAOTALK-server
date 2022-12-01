@@ -44,6 +44,7 @@ module.exports = {
     }
     ,
     //?  클라이언트에서 오는 챗을 받아서 DB에 저장하고 상대 클라이언트에게 소켓으로 보내준다. 
+    //! 아마 여기서 오는 receiverSocketId는 PrivateChatPage의 클라이언트 소켓아이디 일것이다.
     SendChat : function(io,chatMsg , receiverSocketId ,myId,receiver, cb){
         io.to(receiverSocketId).emit('chatMsg' , {chatMsg ,myId}, (err)=>{
             const query = `INSERT INTO chat_tbl VALUES('${myId}' ,'${receiver}' ,'${chatMsg}',now());`;
@@ -53,12 +54,13 @@ module.exports = {
             })
 
             //? 최신 메세지 하나 저장. 
-            const query2 = `UPDATE chat_room SET last_msg='${chatMsg}' , sender='${myId}' , chatTime=now() WHERE (member_A_id='${myId}' AND member_B_id='${receiver}') OR (member_A_id='${receiver}' AND member_B_id='${myId}');`
+            const query2 = `UPDATE chat_room SET last_msg='${chatMsg}',saw_chat='1', sender='${myId}' , chatTime=now() WHERE (member_A_id='${myId}' AND member_B_id='${receiver}') OR (member_A_id='${receiver}' AND member_B_id='${myId}');`
             connection.query(query2 , (err , rows)=>{
                 if(err) return console.log(err)
-                //! 여기서 이제 소켓으로도 상대클라이언트한테 알려야 될듯 
             });
         });
+
+
     }
 
 }
