@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 
+
+const cookieParser = require('cookie-parser');
+
+
 const http = require('http').createServer(app);
 const {Server} = require('socket.io');
 const io = new Server(http);
@@ -41,8 +45,13 @@ http.listen(8080 , ()=>{
 })
 
 
-io.on('connection' , function(socket){
-    console.log(socket.id);
+
+
+io.use((socket, next) => {
+	// 외부모듈 미들웨어를 안에다 쓰일수 있다. 미들웨어 확장 원칙에 따라 res, req인자를 준다 (후술)
+    cookieParser(SESSIONKEY)(socket.request, socket.request.res || {}, next);
+})
+.on('connection' , function(socket){
 
     //? 클라이언트에서 MainPage로 접속하면 그 사용자의 아이디가온다. 그 아이디에 해당하는 DB에 socket컬럼에 넣어주자.
     socket.on('DBinSocket' , function(myId , cb){ 
@@ -52,11 +61,15 @@ io.on('connection' , function(socket){
     //? 친구목록에서 더블클릭하면 개인챗이 만들어진다. 그 개인챗에서 나의 소켓정보와 나의 아이디 , 상대방의 아이디를 넣어줘야한다. 그럼 DB에 chat_room을 열을 만든다.
     //? 클라A , 클라B , DB 총3개가 접속이 끊기지않고 계속 동기화가 되어있다. !!
     socket.on('MakePrivateChat' , (userData , cb)=>{
+        const req = socket.request;
+        console.log(req.headers.user);
         socketController.MakePrivateChat(io , userData , socket.id , cb);
     })
 
     //? 클라이언트에서 챗메세지와 챗받을사람의 소켓id가 온다. -> 해당 소캣id로 챗메시지를 보낸다.
     socket.on('chatMsg' , (chatMsg , receiverSocketId ,myId,receiver,cb)=>{ 
+        const req = socket.request;
+        console.log(req.headers.user);
         //! 여기서 챗이 오면 저장이 DB에 저장시키는걸 해야된다
         // console.log(io.sockets.adapter.rooms.keys())
         socketController.SendChat(io,chatMsg , receiverSocketId , myId ,receiver, cb);

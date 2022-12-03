@@ -32,8 +32,8 @@ module.exports = {
     sawChat : (req,res)=>{
         //* 메세지를 받는사람의 아이디와 채팅방에있는 메세지를 읽을려고 하는사람의 아이디와 같다면 saw_chat은 0이 되어야함 왜 냐 봤기때문에
         const {receiver , myId} = req.body //? 받는사람아이디
-        if(receiver === req.user.user_id){
-            const query = `UPDATE chat_room SET saw_chat='0' WHERE (member_A_id='${receiver}' AND member_B_id='${myId}') OR (member_A_id='${myId}' AND member_B_id='${receiver}');`;
+        if(receiver !== req.user.user_id){
+            const query = `UPDATE chat_room SET saw_chat='0' WHERE (member_A_id='${receiver}' AND member_B_id='${myId}' AND sender='${receiver}') OR (member_A_id='${myId}' AND member_B_id='${receiver}' AND sender='${receiver}');`;
             connection.query(query , (err,rows)=>{
                 if(err) return res.json({suc : false , msg :'saw_chat err'});
                 return res.json({suc : true});
